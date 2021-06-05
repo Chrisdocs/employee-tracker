@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
-const departmentsConnect = require('./routes/index.js');
-// const roles = require('./routes/roles.js');
+const departmentsConnect = require('./routes/departments.js');
+const rolesConnect = require('./routes/roles.js');
+const employeesConnect = require('./routes/employees.js');
 
 const promptUser = () => {
     return inquirer.prompt ([
@@ -31,9 +32,10 @@ promptUser()
         return departmentsConnect();
     } else if (selection === 'View All Roles') {
         console.log('You selected view all roles');
-        // return rolesConnect;
+        return rolesConnect();
     } else if (selection === 'View All Employees') {
         console.log('You selected view all employees');
+        return employeesConnect();
     } else if (selection === 'Add A Department') {
         console.log('You selected add a dept')
     } else if (selection === 'Add A Role') {

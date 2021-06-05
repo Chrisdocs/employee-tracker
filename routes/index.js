@@ -8,15 +8,3 @@ let con = mysql.createConnection({
     },
     console.log('Connected to employees database')
 );
-
-const departmentsConnect = () => { con.connect (function(err) {
-    if (err) throw err;
-    con.query("SELECT * FROM department", function (err, result, fields) {
-        if (err) throw err;
-        console.log(result);
-        console.log(fields);
-    });
-});
-}
-
-module.exports = departmentsConnect;
