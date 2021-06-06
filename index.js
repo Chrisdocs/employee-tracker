@@ -1,10 +1,6 @@
 const inquirer = require('inquirer');
 const cTable = require('console.table');
-const mysql = require('mysql');
-const departmentsConnect = require('./routes/departments.js');
-const rolesConnect = require('./routes/roles.js');
-const employeesConnect = require('./routes/employees.js');
-const { findSourceMap } = require('module');
+const db = require('./db/connection');
 // const figlet = require('figlet');
 
 // const font = () => {figlet('Employee Tracker', function(err, data) {
@@ -73,29 +69,33 @@ promptUser()
         ])
     } else if (selection === 'Add An Employee') {
         console.log('You selected Add An Employee')
-        return inquirer.prompt ([
-            {
-                type: 'input',
-                name: 'first_name',
-                message: 'What is the new employees first name?'
-            },
-            {
-                type: 'input',
-                name: 'last_name',
-                message: 'What is the new employees last name?'
-            },
-            {
-                type: 'list',
-                name: 'role',
-                choices: [new inquirer.Separator('--- Sales ---'), 'SalesLead', 'Salesperson',new inquirer.Separator('--- Legal ---'), 'Lawyer', 'LawyerIntern',new inquirer.Separator('--- Engineering ---'), 'JuniorEngineer', 'SeniorEngineer', 'HeadEngineer',new inquirer.Separator('--- Finance ---'), 'Accountant', 'AccountsManager']
-            },
-            {
-                type: 'list',
-                name: 'manager',
-                message: 'Who will be the new employees manager?',
-                choices: ['choice one', 'choice two']
-            }
-        ])
+        db.query("SELECT * FROM employee", function (err, result, fields) {
+            if (err) throw err;
+            // console.log(result);
+            return inquirer.prompt ([
+                {
+                    type: 'input',
+                    name: 'first_name',
+                    message: 'What is the new employees first name?'
+                },
+                {
+                    type: 'input',
+                    name: 'last_name',
+                    message: 'What is the new employees last name?'
+                },
+                {
+                    type: 'list',
+                    name: 'role',
+                    choices: [new inquirer.Separator('--- Sales ---'), 'SalesLead', 'Salesperson',new inquirer.Separator('--- Legal ---'), 'Lawyer', 'LawyerIntern',new inquirer.Separator('--- Engineering ---'), 'JuniorEngineer', 'SeniorEngineer', 'HeadEngineer',new inquirer.Separator('--- Finance ---'), 'Accountant', 'AccountsManager']
+                },
+                {
+                    type: 'list',
+                    name: 'manager',
+                    message: 'Who will be the new employees manager?',
+                    choices: result.map(emp => `${emp['first_name']} ${emp['last_name']} ${emp['manager_id']}`)
+                }
+            ])
+        });
 
     } else if (selection === 'Update An Employees Role') {
         console.log('You selected Update An Employees Role')
