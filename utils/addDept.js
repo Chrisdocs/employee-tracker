@@ -1,7 +1,6 @@
 const mysql = require('mysql');
-const promptUser = require('../index.js');
 
-let db = mysql.createConnection({
+let con = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'S24$^DFGS#%GD@fddg3',
@@ -10,14 +9,13 @@ let db = mysql.createConnection({
     console.log('Connected to employees database')
 );
 
-const departmentsConnect = () => { db.connect (function(err) {
+const addDepartment = () => { con.connect (function(err) {
     if (err) throw err;
-    db.query("SELECT * FROM department", function (err, result, fields) {
+    con.query(`INSERT INTO department (id, dept_name) VALUES (${data1}, ${data2})`, function (err, result, fields) {
         if (err) throw err;
         console.log(result);
-        return promptUser();
-        });
     });
+});
 };
 
-module.exports = departmentsConnect;
+module.exports = addDepartment;

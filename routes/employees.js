@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 
-let con = mysql.createConnection({
+let db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'S24$^DFGS#%GD@fddg3',
@@ -9,9 +9,9 @@ let con = mysql.createConnection({
     console.log('Connected to employees database')
 );
 
-const employeesConnect = () => { con.connect (function(err) {
+const employeesConnect = () => { db.connect (function(err) {
     if (err) throw err;
-    con.query("SELECT * FROM employee", function (err, result, fields) {
+    db.query("SELECT * FROM employee", function (err, result, fields) {
         if (err) throw err;
         console.log(result);
     });
