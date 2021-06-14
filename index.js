@@ -22,7 +22,17 @@ const promptUser = ()  => {
             type: 'list',
             name: 'mainSelect',
             message: 'Please Choose what you would like to do:',
-            choices: ['View All Departments', 'View All Roles', 'View All Employees', new inquirer.Separator(), 'Add A Department', 'Add A Role', 'Add An Employee', 'Update An Employees Role', new inquirer.Separator()]
+            choices: [
+                'View All Departments', 
+                'View All Roles', 
+                'View All Employees', 
+                new inquirer.Separator(), 
+                'Add A Department', 
+                'Add A Role', 
+                'Add An Employee', 
+                'Update An Employees Role', 
+                new inquirer.Separator()
+            ]
         }
     ])
 }
@@ -42,7 +52,7 @@ promptUser()
     if (selection === 'View All Departments') {
         console.log('You Selected view all dept');
         //return sql database table for departments
-        return departmentsConnect();
+        departmentsConnect();
     } else if (selection === 'View All Roles') {
         console.log('You selected view all roles');
         return rolesConnect();
@@ -104,4 +114,35 @@ promptUser()
     }
 
 });
+// Get Departments
+const departmentsConnect = () => { db.connect (function(err) {
+    if (err) throw err;
+    db.query("SELECT employee.first_name, employee.last_name, department.dept_name AS Department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id ORDER BY employee.id;", function (err, res) {
+        if (err) throw err;
+        console.log(res);
+        console.table(res);
+        });
+    });
+};
+//Get Employees
+const employeesConnect = () => { db.connect (function(err) {
+    if (err) throw err;
+    db.query("SELECT employee.first_name, employee.last_name, role.title AS Title FROM employee JOIN role ON employee.role_id = role.id;", function (err, res) {
+        if (err) throw err;
+        console.log(res);
+        console.table(res)
+    });
+});
+};
+//Get Roles
+const rolesConnect = () => { db.connect (function(err) {
+    if (err) throw err;
+    db.query("SELECT employee.first_name, employee.last_name, role.title AS Title FROM employee JOIN role ON employee.role_id = role.id;", function (err, res) {
+        if (err) throw err;
+        console.log(res);
+        console.table(res);
+    });
+});
+};
+
 //retireve relative data from sql server
